@@ -111,3 +111,22 @@ C = capacidade real da mochila
 
    retorne maxTab[N][C] // valor máximo para uma mochila de capacidade C e
 //que pode conter itens que vão do item 1 até o item N.
+
+# Aula Distância de Edição
+ED(S, T, i, j): int
+// S: String inicial, T: String final, i: [1..m], j:[1..n]
+// retorna o número mínimo de edições quando comparando
+// S[i] com T[j]. m é o tamanho de S, n o tamanho de T
+//
+Caso Base:
+Quando ficamos sem caracteres para comparar em S ou em T. Se em ambas, o
+resultado é 0. Se uma das duas, retorna o restante dos caracteres da que não
+está vazia;
+Casos Recursivos
+Se S[i] == T[i], chame recursivamente ED(S, T, i-1, j-1) (foi match, não
+precisa fazer nada nesta posição, o custo é zero.
+Se não, três chamadas recursivas são necessárias:
+• Substituição: ED(S, T, i-1, j-1) + 1
+• Inserção: ED(S, T, i, j-1) + 1
+• Remoção: ED(S, T, i-1, j) + 1
+• Retorne a que resultar em menor custo
