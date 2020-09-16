@@ -16,7 +16,6 @@ public class Knapsack {
          }};
 
          var response = maxTab(165, 10, itens1);
-         //Blocos selecionados: 1, 2, 3, 4, 6
 
          System.out.println("Response 1: " + response);
 
@@ -30,8 +29,6 @@ public class Knapsack {
          }};
 
          response = maxTab(190, 6, itens2);
-         //Blocos selecionados: 1, 2 e 5
-
          System.out.println("Response 2: " + response); 
     }   
     
@@ -46,24 +43,17 @@ public class Knapsack {
         }
     }
     
-    // AINDA NÃO FUNCIONA, PERGUNTAR AO PROFESSOR
-    // N = número de produtos;
-    // C = capacidade real da mochila
     public static int maxTab(int C, int N, ArrayList<itens> itens) {     
         int[][] maxtab = new int[N + 1][C + 1];
 
-        for (int i = 1; i < N; i++)
-            for (int j = 1; j < C; j++)
-                if(itens.get(i).peso <= j)
-                    maxtab[i][j] = max(maxtab[i - 1][j], itens.get(i).valor + maxtab[i - 1][j - itens.get(i).peso]);
+        for (int i = 1; i <= N; i++)
+            for (int j = 1; j <= C; j++)
+                if(itens.get(i - 1).peso <= j)
+                    maxtab[i][j] = Math.max(maxtab[i - 1][j], itens.get(i - 1).valor + maxtab[i - 1][j - itens.get(i - 1).peso]);
                 
                 else
                     maxtab[i][j] = maxtab[i - 1][j]; 
 
         return maxtab[N][C];
-    }
-
-    public static int max(int x, int y) {
-        return x > y ? x : y;
     }
 }

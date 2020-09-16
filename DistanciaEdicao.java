@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.Collections;
+
 public class DistanciaEdicao {
     public static int iterations;
     public static void main(String[] args) {
@@ -5,9 +8,9 @@ public class DistanciaEdicao {
         String S = "Casablanca";
         String T = "Portentoso";
 
-        var response = ED(S,T, S.length() - 1 , T.length() - 1);
+        var response = ED(S, T, S.length(), T.length());
 
-        System.out.println("Olha o que deu: " + response + " " + iterations);
+        System.out.println("Sem prog dinamica: " + response + " iterações: " + iterations);
         
         String S2 = "Maven, a Yiddish word meaning accumulator of knowledge, began as an attempt to " +
         "simplify the build processes in the Jakarta Turbine project. There were several" + 
@@ -25,9 +28,10 @@ public class DistanciaEdicao {
         "Go to the profile of Marin Vlastelica Pogančić" + 
         "Marin Vlastelica Pogančić Jun";
 
-        response = ED(S2, T2, S2.length() - 1 , T2.length() - 1);
+        iterations = 0;
+        response = distEdProgDina(S2, T2);
 
-        System.out.println("Olha o que deu: " + response + " " + iterations);
+        System.out.println("Com prog dinâmica: " + response + " iterações: " + iterations);
 
     }
 
@@ -35,9 +39,9 @@ public class DistanciaEdicao {
         iterations++;
         
         if (i == 0 || j == 0)
-            return 0;
+            return 1;
 
-        if (S.charAt(i) == T.charAt(i)) 
+        if (S.charAt(i - 1) == T.charAt(j - 1)) 
             return ED(S, T, i - 1, j - 1);
         
         var sub = ED(S, T, i - 1, j - 1) + 1;
@@ -47,5 +51,32 @@ public class DistanciaEdicao {
         return sub < ins && sub < rem ? sub : 
                ins < sub && ins < rem ? ins :
                rem;
+    }
+
+    public static int distEdProgDina(String A, String B) {
+        var m = A.length();
+        var n = B.length();
+        int[][] matriz = new int[m + 1][n + 1];
+
+        matriz[0][0] = 0;
+        for (int i = 1; i <= m; i++)
+            matriz[i][0] = matriz[i - 1][0] + 1;
+
+        for (int i = 1; i <= n; i++)
+            matriz[0][i] = matriz[0][i - 1] + 1;
+
+        for (int i = 1; i <= m; i++)
+            for (int j = 1; j <= n; j++) {
+                iterations++;
+                var custoExtra = (A.charAt(i - 1) == B.charAt(j - 1)) ? 0 : 1;
+                matriz[i][j] = Collections.min(
+                                    Arrays.asList(
+                                        matriz[i - 1][j] + 1, 
+                                        matriz[i][j - 1] + 1, 
+                                        matriz[i - 1][j - 1] + custoExtra
+                                ));
+            }
+
+        return matriz[m][n];
     }
 }

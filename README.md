@@ -53,47 +53,10 @@
 1. Monte uma tabela com os resultados e número de iterações de ambas a implementações, para os testes de casos disponíveis no moodle.
 
 ```javascript
-
-   Inteiro backPackPD(Inteiro N, Inteiro C, Tupla<Inteiro, Inteiro> itens)
-
+Inteiro backPackPD(Inteiro N, Inteiro C, Tupla<Inteiro, Inteiro> itens)
+   
    N = número de produtos;
-
    C = capacidade real da mochila
-
-   itens[N +1];   // (O índice 0 guarda null), Tupla com peso e valor
-
-   maxTab[N+1][C+1];
-
-
-
-   Inicialize com 0 toda a linha 0 e também a coluna 0;
-
-   para i = 1 até N
-
-      para j = 1 até C
-
-         se item itens[i].peso <= j // se o item cabe na mochila atual
-
-            maxTab[i][j] = Max(maxTab[i-1][j], 
-
-                               itens[i].valor + 
-
-                                 maxTab[i-1][j – itens[i].peso]);
-
-         senão
-
-            maxTab[i][j] = maxTab[i-1][j];
-
-
-
-   retorne maxTab[N][C] // valor máximo para uma mochila de capacidade C e 		         
-
-                        //que pode conter itens que vão do item 1 até o item N.
-
-```
-
- N = número de produtos;
-C = capacidade real da mochila
 
    itens[N +1]; (O índice 0 guarda null)
    
@@ -111,8 +74,9 @@ C = capacidade real da mochila
 
    retorne maxTab[N][C] // valor máximo para uma mochila de capacidade C e
 //que pode conter itens que vão do item 1 até o item N.
-
+```
 # Aula Distância de Edição
+```
 ED(S, T, i, j): int
 // S: String inicial, T: String final, i: [1..m], j:[1..n]
 // retorna o número mínimo de edições quando comparando
@@ -130,3 +94,26 @@ Se não, três chamadas recursivas são necessárias:
 • Inserção: ED(S, T, i, j-1) + 1
 • Remoção: ED(S, T, i-1, j) + 1
 • Retorne a que resultar em menor custo
+```
+
+```
+// Assumindo os Custos: Remoção=R, Inserção=I , Substituição=S e Match=M=0;
+
+inteiro distEdProgDina(string A, String B)
+	m = tamanho(A);
+	n = tamanho(B);
+	matriz[0][0] = 0;
+	Para i = 1 até m
+	   matriz[i][0] = matriz[i-1][0] + 1  // soma uma I;
+	Para j = 1 até n
+	   matriz[0][j] = matriz[0][j-1] + 1  // Soma uma R;
+	Para i = 1 até m
+	   Para j = 1 até n
+	      Se A[i] == B[j]
+		 custoExtra = 0 //Operação M;
+	      Senão
+		 custoExtra = 1 //Operação S;
+	      matriz[i][j] = Mínimo(matriz[i-1][j] +1, matriz[i][j-1] +1, 
+				    matriz[i-1][j-1] + custoExtra];
+	devolva matriz[m][n];
+```
