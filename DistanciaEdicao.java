@@ -1,5 +1,4 @@
-import java.util.Arrays;
-import java.util.Collections;
+import static java.lang.Math.min;
 
 public class DistanciaEdicao {
     public static int iterations;
@@ -38,8 +37,14 @@ public class DistanciaEdicao {
     public static int ED(String S, String T, int i, int j) {
         iterations++;
         
-        if (i == 0 || j == 0)
-            return 1;
+        if (i == 0 && j == 0)
+            return 0;
+
+        if (i == 0)
+            return j;
+
+        if (j == 0)
+            return i;
 
         if (S.charAt(i - 1) == T.charAt(j - 1)) 
             return ED(S, T, i - 1, j - 1);
@@ -48,9 +53,7 @@ public class DistanciaEdicao {
         var ins = ED(S, T, i, j - 1) + 1; 
         var rem = ED(S, T, i - 1, j) + 1;
 
-        return sub < ins && sub < rem ? sub : 
-               ins < sub && ins < rem ? ins :
-               rem;
+        return min(min(sub, ins), rem);
     }
 
     public static int distEdProgDina(String A, String B) {
@@ -69,12 +72,9 @@ public class DistanciaEdicao {
             for (int j = 1; j <= n; j++) {
                 iterations++;
                 var custoExtra = (A.charAt(i - 1) == B.charAt(j - 1)) ? 0 : 1;
-                matriz[i][j] = Collections.min(
-                                    Arrays.asList(
-                                        matriz[i - 1][j] + 1, 
-                                        matriz[i][j - 1] + 1, 
-                                        matriz[i - 1][j - 1] + custoExtra
-                                ));
+                matriz[i][j] = min(
+                    min(matriz[i - 1][j] + 1, matriz[i][j - 1] + 1), 
+                    matriz[i - 1][j - 1] + custoExtra);
             }
 
         return matriz[m][n];
